@@ -10,6 +10,7 @@ import pytest
 def lines():
     return Lines()
 
+
 @pytest.fixture(params=[0, 1])
 def plot_lines(lines, request):
     if request.param == 0:
@@ -41,6 +42,7 @@ def plot_lines(lines, request):
                    labs=labels,
                    plot=True)
     return lines
+
 
 @pytest.fixture
 def multiple_lines(lines):
