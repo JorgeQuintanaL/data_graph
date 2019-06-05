@@ -11,13 +11,16 @@ from dg.lines import Lines
 import numpy as np
 import pytest
 
+
 @pytest.fixture
 def lines():
     return Lines()
 
+
 def test_constructor(lines):
     assert isinstance(lines, Lines)
     assert len(lines) == 0
+
 
 def test_plot(lines):
     x1 = np.arange(1, 100, 1)
