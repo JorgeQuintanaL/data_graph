@@ -2,3 +2,4 @@ matplotlib
 numpy
 codecov
 flake8
+pytest
