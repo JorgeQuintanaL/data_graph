@@ -6,18 +6,18 @@ import matplotlib.pyplot as plt
 
 
 class Lines():
-    def __init__(self, x: list, y: list):
-        self._data = [x, y]
-        self.x = x
-        self.y = y
+    def __init__(self):
+        self._data = []
 
-    def plot(self, title: str, xlabel: str,  ylabel: str, labels: str):
-        for i in range(len(self.x)):
-            plt.plot(self.x[i], self.y[i])
+    def plot(self, x: list, y: list, title: str,
+             xlabel: str, ylabel: str, labs: str):
+        for i in range(len(x)):
+            plt.plot(x[i], y[i])
             plt.xlabel(xlabel)
             plt.ylabel(ylabel)
-        plt.legend(labels)
+        plt.legend(labs)
         plt.show()
+        self._data = [x, y]
 
     def __len__(self):
         return len(self._data)
