@@ -4,6 +4,7 @@ Tests set for lines.py
 from dg.lines import Lines
 import numpy as np
 import pytest
+import os
 
 
 @pytest.fixture
@@ -64,9 +65,8 @@ def multiple_lines(lines):
     return lines
 
 
-def test_constructor(plot_lines):
-    assert isinstance(plot_lines, Lines)
-    assert len(plot_lines) == 2
+def test_constructor(lines):
+    assert isinstance(lines, Lines)
 
 
 def test_plot(plot_lines):
@@ -75,3 +75,8 @@ def test_plot(plot_lines):
 
 def test_multiple_plots(multiple_lines):
     assert len(multiple_lines) == 2
+
+
+def test_save_images(plot_lines):
+    plot_lines.save("./result_images/test_lines/test_save_images.png")
+    assert os.path.isfile("./result_images/test_lines/test_save_images.png")

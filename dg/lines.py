@@ -22,3 +22,6 @@ class Lines():
 
     def __len__(self):
         return len(self._data)
+
+    def save(self, name):
+        plt.savefig(name)
