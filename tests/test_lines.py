@@ -85,8 +85,9 @@ def test_multiple_plots(multiple_lines):
 
 
 def test_apply_layout(plot_lines):
-    plot_lines.apply_layout()
-    assert len(plot_lines.layout) != 0
+    plot_lines.load_template(path="./template.yml")
+    plot_lines.apply_template()
+    assert len(plot_lines.template) != 0
     plot_lines.show()
 
 

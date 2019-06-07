@@ -3,6 +3,7 @@ Python module to create lines plots using matplotlib as backend
 """
 
 import matplotlib.pyplot as plt
+import yaml
 
 
 class Plot():
@@ -11,13 +12,15 @@ class Plot():
         self.y = None
         self.f = None
         self.axs = None
-        self.layout = None
+        self.template = None
 
-    def apply_layout(self):
-        self.layout = [{"background_color": "#c5eff7",
-                        "grid_color": '#aea8d3'}]
-        self.f.patch.set_facecolor("#c5eff7")
-        self.axs.set_facecolor('#aea8d3')
+    def load_template(self, path):
+        with open(path, 'r') as f:
+            self.template = yaml.load(f, Loader=yaml.FullLoader)
+
+    def apply_template(self):
+        self.f.patch.set_facecolor(self.template["background-color"]["figure-background"])
+        self.axs.set_facecolor(self.template["background-color"]["grid_background"])
 
     def save(self, name):
         self.f.savefig(name)
