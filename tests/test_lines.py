@@ -8,13 +8,23 @@ import os
 
 
 @pytest.fixture
-def generate_x():
+def generate_x1():
     return np.arange(1, 100, 1)
 
 
 @pytest.fixture
-def generate_y(generate_x):
-    return np.power(generate_x, 2)
+def generate_x2():
+    return np.arange(1, 100, 1)
+
+
+@pytest.fixture
+def generate_y1(generate_x1):
+    return np.power(generate_x1, 2)
+
+
+@pytest.fixture
+def generate_y2(generate_x2):
+    return np.power((generate_x2 - 2), 2)
 
 
 @pytest.fixture
@@ -23,48 +33,61 @@ def lines():
 
 
 @pytest.fixture(params=[0, 1])
-def plot_lines(generate_x, generate_y, lines, request):
+def plot_lines(generate_x1, generate_y1, lines, request):
     if request.param == 0:
         x = []
         y = []
         lines.plot(x=[x],
-                   y=[y],
-                   plot=True)
+                   y=[y])
     else:
-        x = generate_x
-        y = generate_y
+        x = generate_x1
+        y = generate_y1
         lines.plot(x=[x],
-                   y=[y],
-                   plot=True)
+                   y=[y])
     return lines
 
 
 @pytest.fixture
-def multiple_lines(generate_x, generate_y, lines):
-    x1 = generate_x
-    y1 = generate_y
-    x2 = generate_x
-    y2 = generate_y + 20
+def multiple_lines(generate_x1, generate_x2, generate_y1, generate_y2, lines):
+    x1 = generate_x1
+    y1 = generate_y1
+    x2 = generate_x2
+    y2 = generate_y2
     labels = ["Some Label 1", "Some Label 2"]
     lines.plot(x=[x1, x2],
                y=[y1, y2],
-               labs=labels,
-               plot=True)
+               labs=labels)
     return lines
 
 
 def test_constructor(lines):
     assert isinstance(lines, Lines)
+    assert lines.x is None
+    assert lines.y is None
+    assert lines.f is None
+    assert lines.axs is None
 
 
 def test_plot(plot_lines):
     assert isinstance(plot_lines, Lines)
-    assert len(plot_lines) == 2
+    assert plot_lines.axs.title.get_text() == "Some Title"
+    assert plot_lines.axs.xaxis.label.get_text() == "Some Label"
+    assert plot_lines.axs.yaxis.label.get_text() == "Some Label"
+    plot_lines.show()
 
 
 def test_multiple_plots(multiple_lines):
     assert isinstance(multiple_lines, Lines)
-    assert len(multiple_lines) == 2
+    assert multiple_lines.axs.title.get_text() == "Some Title"
+    assert multiple_lines.axs.xaxis.label.get_text() == "Some Label"
+    assert multiple_lines.axs.yaxis.label.get_text() == "Some Label"
+    multiple_lines.show()
+
+
+def test_apply_layout(plot_lines):
+    plot_lines.apply_layout()
+    assert len(plot_lines.layout) != 0
+    plot_lines.show()
 
 
 def test_save_images(plot_lines):

@@ -7,25 +7,32 @@ import matplotlib.pyplot as plt
 
 class Lines():
     def __init__(self):
-        self._data = []
+        self.x = None
+        self.y = None
+        self.f = None
+        self.axs = None
 
-    def plot(self, x: list, y: list, plot: bool, title="Some Title",
-             xlabel=["Some Label"], ylabel="Some Label", labs="Some Label"):
-        if len(x) == len(y):
-            self._data = [x, y]
-            for i in range(len(x)):
-                plt.plot(x[i], y[i])
-                plt.xlabel(xlabel)
-                plt.ylabel(ylabel)
-            plt.legend(labs)
-            if plot:
-                plt.show()
-        else:
-            return "Series sizes should match!: \
-                    x is {} and y is {}".format(len(x), len(y))
+    def plot(self, x: list, y: list, title="Some Title",
+             xlabel="Some Label", ylabel="Some Label", labs="Some Label"):
 
-    def __len__(self):
-        return len(self._data)
+        self.x = x
+        self.y = y
+        self.f, self.axs = plt.subplots(1, 1)
+        for i in range(len(x)):
+            self.axs.plot(x[i], y[i])
+            self.axs.set_title(title)
+            self.axs.set_xlabel(xlabel)
+            self.axs.set_ylabel(ylabel)
+            self.axs.legend(labs)
+
+    def apply_layout(self):
+        self.layout = [{"background_color": "#c5eff7",
+                        "grid_color": '#aea8d3'}]
+        self.f.patch.set_facecolor("#c5eff7")
+        self.axs.set_facecolor('#aea8d3')
 
     def save(self, name):
-        plt.savefig(name)
+        self.f.savefig(name)
+
+    def show(self):
+        self.f.show()
