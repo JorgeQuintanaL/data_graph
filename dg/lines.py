@@ -4,6 +4,7 @@ Python module to create lines plots using matplotlib as backend
 
 import matplotlib.pyplot as plt
 import yaml
+import numpy as np
 
 
 class Plot():
@@ -28,6 +29,9 @@ class Plot():
     def show(self):
         self.f.show()
 
+    def get_data(self):
+        return [self.x, self.y]
+
 
 class Lines(Plot):
     def __init__(self):
@@ -40,8 +44,11 @@ class Lines(Plot):
         self.y = y
         self.f, self.axs = plt.subplots(1, 1)
         for i in range(len(x)):
-            self.axs.plot(x[i], y[i])
-            self.axs.set_title(title)
-            self.axs.set_xlabel(xlabel)
-            self.axs.set_ylabel(ylabel)
-            self.axs.legend(labs)
+            if type(x[i]) == np.ndarray:
+                self.axs.plot(x[i], y[i])
+                self.axs.set_title(title)
+                self.axs.set_xlabel(xlabel)
+                self.axs.set_ylabel(ylabel)
+                self.axs.legend(labs)
+            else:
+                raise(ValueError)

@@ -35,8 +35,8 @@ def lines():
 @pytest.fixture(params=[0, 1])
 def plot_lines(generate_x1, generate_y1, lines, request):
     if request.param == 0:
-        x = []
-        y = []
+        x = np.empty([2, 2])
+        y = np.empty([2, 2])
         lines.plot(x=[x],
                    y=[y])
     else:
@@ -68,6 +68,13 @@ def test_constructor(lines):
     assert lines.axs is None
 
 
+def test_different_types(lines):
+    with pytest.raises(ValueError):
+        x = ["Jorge", 2, 3]
+        y = x
+        lines.plot(x=[x], y=[y])
+
+
 def test_plot(plot_lines):
     assert isinstance(plot_lines, Lines)
     assert plot_lines.axs.title.get_text() == "Some Title"
@@ -94,3 +101,10 @@ def test_apply_layout(plot_lines):
 def test_save_images(plot_lines):
     plot_lines.save("./result_images/test_lines/test_save_images.png")
     assert os.path.isfile("./result_images/test_lines/test_save_images.png")
+
+
+def test_get_data(lines, generate_x1, generate_y1):
+    x = generate_x1
+    y = generate_y1
+    lines.plot(x=[x], y=[y])
+    assert len(lines.get_data()) == len([x, y])
